@@ -1,0 +1,7 @@
+.idea/*
+storage/*
+composer.lock
+vendor/*
+root/data/*
+root/coverage/*
+logs/*
