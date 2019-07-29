@@ -1,4 +1,4 @@
-![](./wedo.svg)
+![](./wedo.png)
 
 # Standard WEDO PHP Job Application Test
 
