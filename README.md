@@ -1,67 +1,46 @@
-# Standard WEDO PHP Job Application Test
+# Стандартный тест WEDO по PHP
 
-## Purposes
+## Требования
 
-The aim of the task is to evaluate the following traits of the candidates:
-- Skills at PHP MVC development
-- Knowledge of PHP, OOP, SQL etc.
-- Creative thinking
-- Code style
+Рассчётное время разработки - 5-8 часов.
 
+Вы можете использовать следующие технологии:
 
-## Requirements
-
-Estimated development time is 8 hours.
-
-You're free to use any of the following technologies
-
-
-| Category           | Requirements                                            |
+| Категория          | Требования                                              |
 |--------------------|---------------------------------------------------------|
-| Framework          | Either Laravel or own solution                          |
-| External libraries | Any libraries available on Packagist.org                |
-| Php                | >=7.1                                                   |
-| Db                 | mysql, mariadb, postgres                                |
+| Фреймворк          | Laravel или собственное решение (без фреймворка)        |
+| Внешние библиотеки | Любые библиотеки, доступные из composer                 |
+| PHP                | >=7.1                                                   |
+| База данных        | mysql, mariadb, postgresql                              |
+
+Пожалуйста, предоставьте вместе с решением миграции для структуры таблиц или эквивалентные SQL-скрипты, а также краткую инструкцию по разворачиванию/установке в README.
 
 
-The applicant is also free to use whatever libraries/frameworks/patterns he/she desires.
+## Ожидаемый функционал
 
-Please provide the database migrations or equivalent SQL scripts and an installation/deployment guide in a README with your solution.
+Доступ к приложению предоставляется посредством REST API. 
+Для выполнения задания нужно имплементировать все интерфейсы в пространстве имён `\App\Task`.
 
-
-## Expected functionality
-
-The application features access both from the command line (see CLI API) and via REST API.
-The applicant is required to implement all interfaces at `\App\Task` namespace.
-
-### CLI API
-
-The following protocol is established for CLI usage:
-
-```
-php cli.php COMMAND     # Outputs method COMMAND of \Task\Models\CLI
-```
-
-All commands are contained in ` \Task\Models\CLI` interface.
+Имплементация интерфейса `\Task\Models\CLI` является опциональной (смотр. Необязательные задания).
 
 ### REST API
 
-REST API implements **GET** (view), **POST**(add), **PATCH**(edit) and **DELETE**(delete) HTTP methods
+REST API реализует HTTP-методы **GET** (просмотреть), **POST**(добавить), **PATCH**(редактировать) and **DELETE**(удалить)
 
-Api features the following endpoints:
-- `users` (Model implements `\Task\Models\User`)
-- `posts` (Models implement `\Task\Models\Post` and `\Task\Models\MediaPost`, as well as `\Task\Models\User`, `\Task\Models\Comment`)
-- `posts/{id}/comments` (Model implements `\Task\Models\Comment`)
+В API присутствуют следующие конечные точки для запросов:
+- `users` (Модель реализует интерфейс `\Task\Models\User`)
+- `posts` (Модель реализует интерфейсы `\Task\Models\Post` и `\Task\Models\MediaPost`, в зависимости от содержания)
+- `posts/{id}/comments` (Модель реализует интерфейс `\Task\Models\Comment`)
 
-Possible requests:
-- `GET /{ENDPOINT}` - View list
-- `GET /{ENDPOINT}?sort=views&sortType=desc&page=1&perPage=20` - View list with optional parameters **sort**, **sortType**, **page** and **perPage**
-- `GET /{ENDPOINT}/{id}` - View element
-- `POST /{ENDPOINT}` - Add element
-- `PATCH /{ENDPOINT}/{id}` - Edit element
-- `DELETE /{ENDPOINT}/{id}` - Remove element
+Возможные варианты запросов (`ENDPOINT` может быть `users`, `posts`, `posts/{postID}/comments`):
+- `GET /{ENDPOINT}` - Просмотреть список
+- `GET /{ENDPOINT}?sort=views&sortType=desc&page=1&perPage=20` - Просмотреть список с опциональными параметрами **sort**, **sortType**, **page** и **perPage**
+- `GET /{ENDPOINT}/{id}` - Просмотреть элемент
+- `POST /{ENDPOINT}` - Добавить элемент
+- `PATCH /{ENDPOINT}/{id}` - Редактировать элемент
+- `DELETE /{ENDPOINT}/{id}` - Удалить элемент
 
-Each post contains a body of comments, expected output looks like this:
+Каждый пост содержит тело комментариев, ожидаемый вывод сервера в формате JSON имеет следующий вид:
 
 ```http
 GET /posts HTTP/1.1
@@ -125,19 +104,34 @@ Content-Type: application/json
 ]
 ```
 
-Please note: `GET /posts/44/comments` returns a list of 2 comments, one of which has a reply.
-However, `GET /posts/44/comments/143`, where `143` is the reply comment ID is a valid request, and so are all other methods for this endpoint.
+Обратите внимание: `GET /posts/44/comments` возвращает список из 2 комментариев, у у одного из которых есть ответ.
+Однако, `GET /posts/44/comments/143`, где `143` - ID комментария-ответа является действительным запросом, как и все прочие запросы для этого адреса.
 
-Please note that output fields are not necessarily equal to public fields of mentioned models.
+Более подробная информация о моделях и их полях содержится в комментариях к интерфейсам.
+Если вы не реализуете дополнительное задание с интерфейсом `\Task\Models\CLI`, предоставьте, пожалуйста, вместе с решением набор тестовых данных.
 
-Tip: compress images if necessary.
+Обратите внимание, что поля ответа не обязательно соответствуют тем полям, которые хранятся в базе данных (возможно, нужно будет их модифицировать / изменить формат).
+Подсказка: сжимайте изображения, если в этом есть потребность.
 
-## Optional
 
-Optionally, you might also do one (or all) of the following:
-- Wrap the application into a docker container
-- Add user registration API
-- Add authentication / login API
-- Write unit tests for your classes
-- Add front-end for post gallery
 
+## Необязательные задания
+
+Задание считается готовым и выполненным, если соответствует всем указанным выше требованиям, но если у Вас есть желание продемонстрировать углублённые навыки бэкенд-разработки, предлагаем ряд необязательных заданий:
+
+### Интерфейс для коммандной строки
+
+В интерфейсе `\Task\Models\CLI` содержится 3 дополнительных метода. 
+Для выполнения этой части задания, реализуйте выполнение этих методов через запрос с коммандной строки.
+
+Пример запроса:
+
+```
+php cli.php COMMAND     # Outputs method COMMAND of \Task\Models\CLI
+```
+
+### Дополнительные задания
+
+В качестве бонуса, можете реализовать следующее:
+- Создать юнит-тесты для классов проекта
+- Заверните приложение в контейнер docker
