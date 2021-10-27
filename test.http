@@ -1,0 +1,92 @@
+
+### POSTS
+
+### Get all posts
+GET http://127.0.0.1:8000/api/posts
+
+
+### Get sorted posts, page 1
+GET http://127.0.0.1:8000/api/posts?sort=views&direction=asc&page=1&per_page=20
+
+
+### Get sorted posts, page 2
+GET http://127.0.0.1:8000/api/posts?sort=date&direction=asc&page=2&per_page=20
+
+
+### Get sorted posts, page 3
+GET http://127.0.0.1:8000/api/posts?sort=trending&page=3&per_page=20
+
+
+### Get sorted posts, page 4
+GET http://127.0.0.1:8000/api/posts?sort=controversial&direction=asc&page=4&per_page=10
+
+
+### Get post #14
+GET http://127.0.0.1:8000/api/posts/14
+
+
+### Create post
+POST http://127.0.0.1:8000/api/posts
+{
+  "text": "Я і ти зустрілися знов...",
+  "image": "https://images.unsplash.com/photo-1553613599-d0f3dd9416ae"
+}
+
+
+### Edit post #14
+PATCH http://127.0.0.1:8000/api/posts/14
+{
+  "text": "Я і ти зустрілися знов...",
+  "image": "https://images.unsplash.com/photo-1553613599-d0f3dd9416ae"
+}
+
+
+### Remove post #14
+DELETE http://127.0.0.1:8000/api/posts/14
+
+
+
+
+
+### COMMENTS
+
+### View comments on post 14
+GET http://127.0.0.1:8000/api/posts/14
+
+
+### View comment 144 (with descendant replies)
+GET http://127.0.0.1:8000/api/posts/14/comments/144
+
+### Also valid
+GET http://127.0.0.1:8000/api/comments/144
+
+
+### Create comment
+POST http://127.0.0.1:8000/api/posts/14/comments
+{
+  "text": "Я і ти зустрілися знов...",
+  "user_name": "Шопен",
+  "referenced_comment_id": 144
+}
+
+
+### Change or move comment
+PATCH http://127.0.0.1:8000/api/posts/14/comments/144
+{
+  "text": "Я і ти зустрілися знов...",
+  "referenced_comment_id": null,
+  "post_id": 12
+}
+
+### Also valid
+PATCH http://127.0.0.1:8000/api/comments/144
+{
+  "text": "Я і ти зустрілися знов...",
+}
+
+
+### Delete comment
+DELETE http://127.0.0.1:8000/api/posts/14/comments/144
+
+### Also valid
+DELETE http://127.0.0.1:8000/api/comments/144

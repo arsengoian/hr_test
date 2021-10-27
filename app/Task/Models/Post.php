@@ -1,11 +1,10 @@
 <?php
 
 
-namespace App\Models;
+namespace App\Task\Models;
 
 
-use Jenssegers\Date\Date;
-
+use Carbon\Carbon;
 
 /**
  * Interface Post
@@ -13,12 +12,13 @@ use Jenssegers\Date\Date;
  *
  * Public fields:
  *
- * @property Date $created_at
+ * @property Carbon $created_at
  * @property string $text
+ * @property null|string $image
  * @property int $views
  * @property null|array<Comment> $comments     Tip: if using Laravel, use a relationship
  */
-interface Post extends Printable
+interface Post
 {
 
 }
